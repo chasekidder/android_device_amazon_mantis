@@ -50,7 +50,7 @@ script:
     source build/envsetup.sh
     # Choose build flavor as "eng" or "userdebug"
     BUILD_FLAVOR="eng"
-    lunch omni_mantis-pie
+    lunch omni_mantis-eng
     make -j$(nproc --all) recoveryimage
     exit
     EOF
