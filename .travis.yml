@@ -9,7 +9,6 @@ addons:
     update:
       - true
     packages:
-      - aria2
       - zstd
       - xz-utils
 services:
@@ -38,8 +37,9 @@ before_script:
   # Then uncomment below lines to download & extract the multi-part files
   - travis_retry wget -q --show-progress --progress=bar:force "${RELEASE_PATH}${TWRP_SOURCE_MD5}" "${RELEASE_PATH}${TWRP_SOURCE1}" "${RELEASE_PATH}${TWRP_SOURCE2}" "${RELEASE_PATH}${TWRP_SOURCE3}" "${RELEASE_PATH}${TWRP_SOURCE4}"
   - md5sum -c "${TWRP_SOURCE_MD5}"
-  - mv MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.aa twrp9.tzst.aa && mv MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.ab twrp9.tzst.ab && mv MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.ac twrp9.tzst.ac && mv MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.ad twrp9.tzst.ad
-  - tar --zt -x twrp9.tzst.aa --directory $HOME/twrp/ && rm twrp9.tzst.*
+  - cat MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.a* > MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst
+  - rm MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.a* && rm "${TWRP_SOURCE_MD5}"
+  - tar --use-compress-program zstd --extract --file MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst --directory $HOME/twrp/ && rm MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst
 script:
   # Replace your ${_USERNAME_}, ${_REPO_SLUG_}, ${_VENDORNAME_}, ${_CODENAME_}
   - cd $HOME/twrp/ && git clone https://github.com/chasekidder/android_device_amazon_mantis.git device/amazon/mantis
