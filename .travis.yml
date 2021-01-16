@@ -40,12 +40,13 @@ before_script:
   - cat MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.a* > MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst
   - rm MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst.a* && rm "${TWRP_SOURCE_MD5}"
   - tar --use-compress-program zstd --extract --file MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst --directory $HOME/twrp/ && rm MinimalOmniRecovery-twrp-9.0-norepo-20201103.tzst
+  - curl -sL https://gist.github.com/rokibhasansagar/247ddd4ef00dcc9d3340397322051e6a/raw/roomservice_90.py -o $HOME/twrp/vendor/omni/build/tools/roomservice.py
 script:
   # Replace your ${_USERNAME_}, ${_REPO_SLUG_}, ${_VENDORNAME_}, ${_CODENAME_}
   - cd $HOME/twrp/ && git clone https://github.com/chasekidder/android_device_amazon_mantis.git device/amazon/mantis
   - rm -rf bootable/recovery && git clone https://github.com/omnirom/android_bootable_recovery -b android-9.0 --depth 1 bootable/recovery
   - |
-    docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/home/builder/twrp/:rw,z" -v "${HOME}/.ccache:/srv/ccache:rw,z" fr3akyphantom/droid-builder bash << EOF
+    docker run --rm -i -v "$(pwd):/home/builder/twrp/:rw,z" -v "${HOME}/.ccache:/srv/ccache:rw,z" fr3akyphantom/droid-builder bash << EOF
     cd /home/builder/twrp/
     source build/envsetup.sh
     # Choose build flavor as "eng" or "userdebug"
